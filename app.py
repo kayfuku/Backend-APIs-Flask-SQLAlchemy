@@ -30,11 +30,11 @@ def create_app(test_config=None):
 
 app = create_app()
 
-# Default port:
+# local
 if __name__ == '__main__':
     app.run()
 
-# ** (deploy)
+# #
 # if __name__ == '__main__':
 #     port = int(os.environ.get('PORT', 5000))
 #     app.run(host='0.0.0.0', port=port)
