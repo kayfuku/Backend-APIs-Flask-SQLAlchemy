@@ -14,8 +14,12 @@ def create_app(test_config=None):
     @app.route('/')
     def get_greeting():
         greeting = "Hello"
+        print(greeting)
 
-        return greeting
+        return jsonify({
+            'success': True,
+            'greeting': greeting
+        })
 
     @app.route('/coolkids')
     def be_cool():
