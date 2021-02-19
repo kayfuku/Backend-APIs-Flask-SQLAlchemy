@@ -1,11 +1,12 @@
 import os
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, Integer, DateTime, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
 # ** (deploy)
 # database_path = os.environ['DATABASE_URL']
 
+# local
 database_name = "capstone"
 database_path = "postgres://{}/{}".format('localhost:5432', database_name)
 
@@ -26,24 +27,28 @@ def setup_db(app, database_path=database_path):
 
 
 '''
-Person
-Have title and release year
+Movie
+Have title and release date
 '''
 
 
-class Person(db.Model):
-    __tablename__ = 'People'
+class Movie(db.Model):
+    __tablename__ = 'Movie'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    catchphrase = Column(String)
+    title = Column(String)
+    release_date = Column(DateTime)
 
-    def __init__(self, name, catchphrase=""):
-        self.name = name
-        self.catchphrase = catchphrase
+    def __init__(self, title, release_date):
+        self.title = title
+        self.release_date = release_date
 
-    def format(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'catchphrase': self.catchphrase}
+    def __repr__(self):
+        return '<Movie %r>' % self
+
+    @property
+    def get_dict(self):
+        return {'id': self.id,
+                'title': self.title,
+                'release_date': self.release_date.strftime("%m/%d/%Y")
+                }

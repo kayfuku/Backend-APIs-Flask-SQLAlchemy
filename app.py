@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import db, setup_db, Person
+from models import db, setup_db, Movie
 
 
 def create_app(test_config=None):
