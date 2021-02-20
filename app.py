@@ -2,8 +2,11 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import is_dev, db, setup_db, db_drop_and_create_all, Movie
+from models import db, setup_db, db_drop_and_create_all, Movie
 from auth import requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
+
+# True: development, False: production
+is_dev = False
 
 
 def create_app(test_config=None):
@@ -168,11 +171,4 @@ def internal_server_error(error):
 
 
 if __name__ == '__main__':
-    if is_dev:
-        host = '127.0.0.1'
-        port = 5000
-    else:
-        host = '0.0.0.0'
-        port = 8080
-
-    app.run(host=host, port=port, debug=is_dev)
+    app.run(host='0.0.0.0', port=8080, debug=is_dev)

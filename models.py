@@ -3,8 +3,6 @@ from sqlalchemy import Column, String, Integer, DateTime, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-# True: development, False: production
-is_dev = False
 
 database_path = os.environ['DATABASE_URL']
 
