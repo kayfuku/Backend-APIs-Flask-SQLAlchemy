@@ -12,7 +12,7 @@ CASTING_ASSISTANT_TOKEN = ''
 EXECUTIVE_PRODUCER_TOKEN = ''
 
 
-def get_headers(token):
+def get_auth_header(token):
     return {'Authorization': f'Bearer {token}'}
 
 
@@ -77,15 +77,18 @@ class TestCase(unittest.TestCase):
             'title': 'Movie D',
             'release_date': '2021-05-25'
         }
-        # auth_header = get_headers(EXECUTIVE_PRODUCER_TOKEN)
-        # res = self.client().post("/movies", json=post_data, headers=auth_header)
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        res = self.client().post('/movies', json=new_movie)
+        res = self.client().post('/movies', json=new_movie, headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data))
+
+        # Delete the row just created.
+        created_id = data['created']
+        Movie.query.filter(Movie.id == created_id).one_or_none().delete()
 
     def test_400_create_movie(self):
         res = self.client().post('/movies')  # no body

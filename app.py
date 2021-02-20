@@ -35,7 +35,6 @@ def after_request(response):
 @app.route('/')
 def get_greeting():
     greeting = "Hello"
-    # print(greeting)
 
     return jsonify({
         'success': True,
@@ -45,14 +44,16 @@ def get_greeting():
 
 @app.route("/login", methods=["GET"])
 def generate_login_url():
-    url = f'https://{AUTH0_DOMAIN}/authorize' \
+    login_url = f'https://{AUTH0_DOMAIN}/authorize' \
         f'?audience={API_AUDIENCE}' \
         f'&response_type=token&client_id=' \
         f'{AUTH0_CLIENT_ID}&redirect_uri=' \
         f'{AUTH0_CALLBACK_URL}'
 
+    print('login url:', login_url)
+
     return jsonify({
-        'url': url
+        'login_url': login_url
     })
 
 
