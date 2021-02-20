@@ -12,6 +12,10 @@ CASTING_ASSISTANT_TOKEN = ''
 EXECUTIVE_PRODUCER_TOKEN = ''
 
 
+def get_headers(token):
+    return {'Authorization': f'Bearer {token}'}
+
+
 class TestCase(unittest.TestCase):
     """This class represents the test case"""
 
@@ -71,14 +75,17 @@ class TestCase(unittest.TestCase):
     def test_create_movie(self):
         new_movie = {
             'title': 'Movie D',
-            'release_date': '2021-05-25 00:00:00'
+            'release_date': '2021-05-25'
         }
+        # auth_header = get_headers(EXECUTIVE_PRODUCER_TOKEN)
+        # res = self.client().post("/movies", json=post_data, headers=auth_header)
+
         res = self.client().post('/movies', json=new_movie)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertTrue(len(data['movies']))
+        self.assertTrue(len(data))
 
     def test_400_create_movie(self):
         res = self.client().post('/movies')  # no body
