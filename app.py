@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import db, setup_db, db_drop_and_create_all, Movie
+from models import is_dev, db, setup_db, db_drop_and_create_all, Movie
 
 
 def create_app(test_config=None):
@@ -117,11 +117,12 @@ def internal_server_error(error):
     }), 500
 
 
-# # ** (dev)
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-# ** (deploy)
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))
-    app.run(host='0.0.0.0', port=port)
+    # port = int(os.environ.get('PORT', 5000))
+    if is_dev:
+        host = '127.0.0.1'
+        port = 5000
+    else:
+        host = '0.0.0.0'
+        port = 8080
+    app.run(host=host, port=port, debug=is_dev)

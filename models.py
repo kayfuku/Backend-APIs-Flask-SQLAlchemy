@@ -3,13 +3,15 @@ from sqlalchemy import Column, String, Integer, DateTime, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
+is_dev = True
 
-# # ** (dev)
-# database_name = "capstone"
-# database_path = "postgres://{}/{}".format('localhost:5432', database_name)
-
-# ** (deploy)
-database_path = os.environ['DATABASE_URL']
+if is_dev:
+    # dev
+    database_name = "capstone"
+    database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+else:
+    # deploy
+    database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
 
