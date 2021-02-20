@@ -3,16 +3,16 @@ import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
 
-from app import create_app
-from models import setup_db, Person
+from app import app
+from models import setup_db, Movie
 
 
-class TriviaTestCase(unittest.TestCase):
-    """This class represents the trivia test case"""
+class TestCase(unittest.TestCase):
+    """This class represents the test case"""
 
     def setUp(self):
         """Define test variables and initialize app."""
-        self.app = create_app()
+        self.app = app
         self.client = self.app.test_client
         self.database_name = "capstone"
         self.database_path = "postgres://{}/{}".format(
@@ -50,7 +50,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['greeting'], "Hello")
 
     def test_get_movies(self):
-        pass
+        res = self.client().get('/movies')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_movies'])
+        self.assertTrue(len(data['movies']))
+
+    def test_404_get_movies(self):
+        res = self.client().get('/movies?page=1000000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
 
 
 if __name__ == "__main__":

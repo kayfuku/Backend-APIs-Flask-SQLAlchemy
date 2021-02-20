@@ -23,6 +23,10 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+
+
+def db_drop_and_create_all():
+    db.drop_all()
     db.create_all()
 
 
@@ -43,12 +47,20 @@ class Movie(db.Model):
         self.title = title
         self.release_date = release_date
 
-    def __repr__(self):
-        return '<Movie %r>' % self
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
-    @property
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
     def get_dict(self):
-        return {'id': self.id,
-                'title': self.title,
-                'release_date': self.release_date.strftime("%m/%d/%Y")
-                }
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release_date': self.release_date.strftime("%m/%d/%Y")
+        }
