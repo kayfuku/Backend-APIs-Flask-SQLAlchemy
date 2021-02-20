@@ -67,6 +67,38 @@ def get_movies():
     })
 
 
+@app.route('/movies', methods=['POST'])
+def create_movie():
+    body = request.get_json()
+    if body is None:
+        abort(400)
+
+    try:
+        new_title = body.get('title', None)
+        new_release_date = body.get('release_date', None)
+
+        movie = Movie(
+            title=new_title,
+            release_date=new_release_date
+        )
+        movie.insert()
+
+        selection = Movie.query.order_by(Movie.id).all()
+        current_movies = [movie.get_dict()
+                          for movie in paginate(request, selection)]
+
+        return jsonify({
+            'success': True,
+            'created': movie.id,
+            'movies': current_movies,
+            'total_movies': len(Movie.query.all())
+        })
+
+    except Exception as ex:
+        db.session.rollback()
+        abort(422)
+
+
 '''
 Error handler
 '''

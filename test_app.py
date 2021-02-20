@@ -26,13 +26,6 @@ class TestCase(unittest.TestCase):
             # create all tables
             self.db.create_all()
 
-        self.new_question = {
-            'question': 'q1',
-            'answer': 'a1',
-            'category': '5',
-            'difficulty': 1
-        }
-
     def tearDown(self):
         """Executed after reach test"""
         pass
@@ -65,6 +58,18 @@ class TestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
+
+    def test_create_movie(self):
+        new_movie = {
+            'title': 'Movie D',
+            'release_date': '2021-05-25 00:00:00'
+        }
+        res = self.client().post('/movies', json=new_movie)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data['movies']))
 
 
 if __name__ == "__main__":

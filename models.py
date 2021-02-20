@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, DateTime, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
+# True: development, False: production
 is_dev = True
 
 if is_dev:
@@ -49,6 +50,9 @@ class Movie(db.Model):
     def __init__(self, title, release_date):
         self.title = title
         self.release_date = release_date
+
+    def __repr__(self):
+        return '<Movie %r>' % self
 
     def insert(self):
         db.session.add(self)
