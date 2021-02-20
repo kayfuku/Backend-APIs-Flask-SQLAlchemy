@@ -3,7 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import is_dev, db, setup_db, db_drop_and_create_all, Movie
-from auth import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
+from auth import requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
 
 
 def create_app(test_config=None):
@@ -69,7 +69,8 @@ def paginate(items, max_per_page):
 
 
 @app.route('/movies', methods=['GET'])
-def get_movies():
+@requires_auth('get:movies')
+def get_movies(jwt):
     selection = Movie.query.order_by(Movie.id).all()
     current_movies = [movie.get_dict()
                       for movie in paginate(selection, MOVIES_PER_PAGE)]
@@ -84,7 +85,8 @@ def get_movies():
 
 
 @app.route('/movies', methods=['POST'])
-def create_movie():
+@requires_auth('post:movies')
+def create_movie(jwt):
     body = request.get_json()
     if body is None:
         abort(400)

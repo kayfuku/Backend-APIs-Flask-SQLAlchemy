@@ -7,9 +7,9 @@ from app import app
 from models import setup_db, Movie
 
 
-CASTING_ASSISTANT_TOKEN = ''
+CASTING_ASSISTANT_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwYTY4Njg0NDFmZDYwMDcwODFjZDMxIiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4MDU1MjAsImV4cCI6MTYxMzgxMjcyMCwiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.i72_E6WzhbWEj6A3jxDb0iM0X8-ndV03hVD3xT8YevW3aWFDYnLVqOthPBqna0Zdzl_QaqKAtGQ7Eehk3ff0DkCNkWV4_hbESSJ8CNMDelgTGEtYFsdNKx6YSeEsnxVwPHFyTMslZ_X8QBtvyg6Ie-8xhd2d38tWAtZezcxZu4XE3zblGF2Fs8lMkipVxwkEGrgfcyUM_7dn0ajgj6fyeVjCY58T-Iv_he0YrAbTr-9onTKDfoy_8Y8LNAkaCauqFnOynysSl9c8wra_8M_eUZQZFURMJk3RGWwCvpGxgK4wyyZKMousmQ84h6rQJBdVjfhsDospRF6poHWB-w5ifA'
 
-EXECUTIVE_PRODUCER_TOKEN = ''
+EXECUTIVE_PRODUCER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwMGY2YjIxNTIyMTgwMDZhM2M3NmU5IiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4MDU4NzQsImV4cCI6MTYxMzgxMzA3NCwiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.GMhyhppfQeo8I47Y3oKaIIWpOHFA51xIMwjdF_D-EIFi40yxbzWKawfZJbpbLoSNA3ar3DM9SRh33AwNOvDXLrDmqEjo7nfmvxmUoWAHAV8pTDwjGo50oo-Xtd0br6pwMjU2A7PWqhRLBJt1k7jLnc9B_7cNzUu3zGkhzGoqOQ3XEMhHKKbU-5CGXvbftDVcZBYRJfQe_SIP9_0iRJS6S5g8KxesXWEVvLlIcvd3MRbJC3uk64m9UvW5cGVd9Piu-zfBR4cgsa3Wk0pxUAQvR_z1X3lFRbq-5ulqZDDkVAsu5L5GoEGFiwd5T_jcrEcilm3v5mKtpsVCai_DkbSwFw'
 
 
 def get_auth_header(token):
@@ -56,7 +56,9 @@ class TestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_get_movies(self):
-        res = self.client().get('/movies')
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().get('/movies', headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -65,7 +67,9 @@ class TestCase(unittest.TestCase):
         self.assertTrue(len(data['movies']))
 
     def test_404_get_movies(self):
-        res = self.client().get('/movies?page=1000000')
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().get('/movies?page=1000000', headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -91,7 +95,9 @@ class TestCase(unittest.TestCase):
         Movie.query.filter(Movie.id == created_id).one_or_none().delete()
 
     def test_400_create_movie(self):
-        res = self.client().post('/movies')  # no body
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().post('/movies', headers=auth_header)  # no body
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 400)
