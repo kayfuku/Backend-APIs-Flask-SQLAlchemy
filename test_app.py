@@ -71,6 +71,14 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['movies']))
 
+    def test_400_create_movie(self):
+        res = self.client().post('/movies')  # no body
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
+
 
 if __name__ == "__main__":
     unittest.main()
