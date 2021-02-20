@@ -49,7 +49,9 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(data['greeting'], "Hello")
 
+    def test_get_movies(self):
+        pass
 
-# Make the tests conveniently executable
+
 if __name__ == "__main__":
     unittest.main()
