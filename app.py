@@ -3,6 +3,7 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import is_dev, db, setup_db, db_drop_and_create_all, Movie
+from auth import AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
 
 
 def create_app(test_config=None):
@@ -39,6 +40,19 @@ def get_greeting():
     return jsonify({
         'success': True,
         'greeting': greeting
+    })
+
+
+@app.route("/login", methods=["GET"])
+def generate_login_url():
+    url = f'https://{AUTH0_DOMAIN}/authorize' \
+        f'?audience={API_AUDIENCE}' \
+        f'&response_type=token&client_id=' \
+        f'{AUTH0_CLIENT_ID}&redirect_uri=' \
+        f'{AUTH0_CALLBACK_URL}'
+
+    return jsonify({
+        'url': url
     })
 
 
@@ -150,11 +164,11 @@ def internal_server_error(error):
 
 
 if __name__ == '__main__':
-    # port = int(os.environ.get('PORT', 5000))
     if is_dev:
         host = '127.0.0.1'
         port = 5000
     else:
         host = '0.0.0.0'
-        port = 8080
+        port = int(os.environ.get('PORT', 5000))
+
     app.run(host=host, port=port, debug=is_dev)

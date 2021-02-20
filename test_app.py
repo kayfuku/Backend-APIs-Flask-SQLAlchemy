@@ -7,6 +7,11 @@ from app import app
 from models import setup_db, Movie
 
 
+CASTING_ASSISTANT_TOKEN = ''
+
+EXECUTIVE_PRODUCER_TOKEN = ''
+
+
 class TestCase(unittest.TestCase):
     """This class represents the test case"""
 
@@ -41,6 +46,10 @@ class TestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertEqual(data['greeting'], "Hello")
+
+    def test_generate_login_url(self):
+        res = self.client().get('/login')
+        self.assertEqual(res.status_code, 200)
 
     def test_get_movies(self):
         res = self.client().get('/movies')
