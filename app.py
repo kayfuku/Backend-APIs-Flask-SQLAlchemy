@@ -173,6 +173,6 @@ if __name__ == '__main__':
         port = 5000
     else:
         host = '0.0.0.0'
-        port = int(os.environ.get('PORT', 5000))
+        port = 8080
 
     app.run(host=host, port=port, debug=is_dev)
