@@ -35,7 +35,7 @@ def after_request(response):
 @app.route('/')
 def get_greeting():
     greeting = "Hello"
-    print(greeting)
+    # print(greeting)
 
     return jsonify({
         'success': True,
@@ -56,21 +56,22 @@ def generate_login_url():
     })
 
 
-PER_PAGE = 10
+MOVIES_PER_PAGE = 10
+ACTORS_PER_PAGE = 10
 
 
-def paginate(request, selection):
+def paginate(items, max_per_page):
     page = request.args.get('page', 1, type=int)
-    start = (page - 1) * PER_PAGE
-    end = start + PER_PAGE
-    return selection[start:end]
+    start = (page - 1) * max_per_page
+    end = start + max_per_page
+    return items[start:end]
 
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
     selection = Movie.query.order_by(Movie.id).all()
     current_movies = [movie.get_dict()
-                      for movie in paginate(request, selection)]
+                      for movie in paginate(selection, MOVIES_PER_PAGE)]
     if len(current_movies) == 0:
         abort(404)
 
@@ -99,7 +100,7 @@ def create_movie():
 
         selection = Movie.query.order_by(Movie.id).all()
         current_movies = [movie.get_dict()
-                          for movie in paginate(request, selection)]
+                          for movie in paginate(selection, MOVIES_PER_PAGE)]
 
         return jsonify({
             'success': True,
