@@ -1,12 +1,13 @@
 import os
+import json
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, setup_db, db_drop_and_create_all, Movie
-from auth import requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
+from auth import AuthError, requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
 
 # True: development, False: production
-is_dev = False
+is_dev = True
 
 
 def create_app(test_config=None):
@@ -120,6 +121,40 @@ def create_movie(jwt):
         abort(422)
 
 
+@app.route('/movies/<int:movie_id>', methods=['PATCH'])
+@requires_auth('patch:movies')
+def update_movie(jwt, movie_id):
+    body = request.get_json()
+
+    movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+    if movie is None:
+        return jsonify({
+            'success': False,
+            'error': 'Movie id ' + movie_id + ' not found to be edited.'
+        }), 404
+
+    else:
+        try:
+            new_title = body.get('title', None)
+            new_release_date = body.get('release_date', None)
+
+            movie.title = new_title or movie.title
+            movie.release_date = json.dumps(
+                new_release_date) or movie.release_date
+
+            movie.update()
+
+            return jsonify({
+                'success': True,
+                'updated_id': movie.id,
+                'updated_movie': movie.get_dict()
+            })
+
+        except Exception as ex:
+            db.session.rollback()
+            abort(422)
+
+
 '''
 Error handler
 '''
@@ -152,6 +187,15 @@ def bad_request(error):
     }), 400
 
 
+@app.errorhandler(401)
+def unauthorized(error):
+    return jsonify({
+        "success": False,
+        "error": 401,
+        "message": "Unauthorized"
+    }), 401
+
+
 @app.errorhandler(405)
 def method_not_allowed(error):
     return jsonify({
@@ -168,6 +212,14 @@ def internal_server_error(error):
         "error": 500,
         "message": "internal server error"
     }), 500
+
+
+@app.errorhandler(AuthError)
+def process_AuthError(error):
+    response = jsonify(error.error)
+    response.status_code = error.status_code
+
+    return response
 
 
 if __name__ == '__main__':
