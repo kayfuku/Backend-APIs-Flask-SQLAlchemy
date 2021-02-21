@@ -119,7 +119,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(data['updated_id'], 4)
 
-    def test_update_invalid_movie(self):
+    def test_404_update_invalid_movie(self):
         updated_movie = {
             'release_date': '2030-05-25'
         }
@@ -145,6 +145,25 @@ class TestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['code'], "token_expired")
+
+    def test_delete_movie(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        movie = Movie.query.all()[0]
+        res = self.client().delete(f'/movies/{movie.id}', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_delete_invalid_movie(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().delete('/movies/1000000', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
 
 
 if __name__ == "__main__":

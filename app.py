@@ -171,7 +171,7 @@ def delete_movie(jwt, movie_id):
 
             return jsonify({
                 'success': True,
-                'id': movie_id
+                'deleted_id': movie_id
             })
 
         except Exception as ex:
