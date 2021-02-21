@@ -130,7 +130,7 @@ def update_movie(jwt, movie_id):
     if movie is None:
         return jsonify({
             'success': False,
-            'error': 'Movie id ' + movie_id + ' not found to be edited.'
+            'error': 'Movie id ' + str(movie_id) + ' not found to be edited.'
         }), 404
 
     else:
@@ -148,6 +148,30 @@ def update_movie(jwt, movie_id):
                 'success': True,
                 'updated_id': movie.id,
                 'updated_movie': movie.get_dict()
+            })
+
+        except Exception as ex:
+            db.session.rollback()
+            abort(422)
+
+
+@app.route('/movies/<int:movie_id>', methods=['DELETE'])
+@requires_auth('delete:movies')
+def delete_movie(jwt, movie_id):
+    movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+    if movie is None:
+        return jsonify({
+            'success': False,
+            'error': 'Movie id ' + str(movie_id) + ' not found to be deleted.'
+        }), 404
+
+    else:
+        try:
+            movie.delete()
+
+            return jsonify({
+                'success': True,
+                'id': movie_id
             })
 
         except Exception as ex:

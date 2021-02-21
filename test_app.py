@@ -119,6 +119,18 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertEqual(data['updated_id'], 4)
 
+    def test_update_invalid_movie(self):
+        updated_movie = {
+            'release_date': '2030-05-25'
+        }
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().patch('/movies/1000000', json=updated_movie, headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
     def test_expired_token(self):
         auth_header = get_auth_header(EXPIRED_TOKEN)
 
