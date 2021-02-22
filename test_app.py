@@ -7,7 +7,7 @@ from app import app
 from models import setup_db, Movie, Actor, Cast
 
 
-CASTING_ASSISTANT_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwYTY4Njg0NDFmZDYwMDcwODFjZDMxIiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4Njg3MjMsImV4cCI6MTYxMzk1NTEyMywiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.TKd4M_8K-DgcKP_RRd3-R06A0vXFUYARLA22zxRoYCgTSTXE40NY483I-BICDVSeJabH_-wamtrGY2xO4ivsiyCm3kepYE6THqb69si3MXNrxIOHRfvcwj3YXIuWP7QCopthTcWIMJdY7Uc49wAl-OqEq_VmVef29sA6cXQMKQ71sp5cmRqm0S8Qvmz7nCmRKlOgU0O1IqjnSw3LZmiEtYYO9HD9fXF6ppTlDIPA_fNs0ImY202k_VXFiBI5gq5BRuM1k87Teub4cPZijY0oD3m34gRaVv7X_ccmwLuzsE6zOQeXzl2r5q0KWJTtfT2TOwgE-FK3D1WGzPHZcoqMfA'
+CASTING_ASSISTANT_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwYTY4Njg0NDFmZDYwMDcwODFjZDMxIiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM5NTkzMzMsImV4cCI6MTYxNDA0NTczMywiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.L4OvcQvhjylHwnUtLFlTPTlg1Tl73JnwiDptgwjn6hxFAkRGwmgmGLtSCYpwBS3dIUk0yXEL_tonxRKLyBDTeDQkpDPWc0wVd70Ng2Z1XLTG19a9k8Ray7j63DULTrWIePqyXfcq6Uw_lny9jU9YTAgBJ7dt8rItFnqu5ZA68_vbVho11YQFXv1YAxOxvk9bIuGpohbRsKoevw5IImUM_rNh92YgoZvseRGkaSPfDBBhAF1XYGF_t_bvR4KaQ2X9j83dAoWvBgXaBOzjYFAOhCShZTPbuz7xeLel-NjWqoDwh_5MLieyWVZyu817U9ftW0L-IouVkgu3z6vhyT0m-g'
 
 EXECUTIVE_PRODUCER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwMGY2YjIxNTIyMTgwMDZhM2M3NmU5IiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM5NTU1OTQsImV4cCI6MTYxNDA0MTk5NCwiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.RnWM5mptfbfGgoUVwlYNoYIAX891PDbTZ-RNxlwmHqBJZNUhmUWtWxw3T71C8KgBChqzkDHxXYEZ9ki1zb7-FEIypOQfO3y9YiofWZu7YC1JsBbbccxvYm-e0nuvjEGfzvUCPT2YG-eXtAhDtz1v7E56uxjEwhyPUHFuzAa4-XTdkzXIwGmoAklSHotPfPTR55z-cG8JrQMYWgHAQEGmOkc0fqQVgZhsREAwIQYfSh9ZY0dGkPwKkT7yO9fvb3uvgH6DG23sHEkynlnh6GjvJ7rfzAcixlI54khmJN4Jiv1ncKtDHDkvh4ktddMMZBGinYQhFTFn2tae8fpz09cqCw'
 
@@ -262,6 +262,58 @@ class TestCase(unittest.TestCase):
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
+
+    '''
+    Tests for Casting Assistant
+    '''
+
+    def test_get_movies(self):
+        auth_header = get_auth_header(CASTING_ASSISTANT_TOKEN)
+
+        res = self.client().get('/movies', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_movies'])
+        self.assertTrue(len(data['movies']))
+
+    def test_401_unauthorized_create_movie(self):
+        new_movie = {
+            'title': 'Movie D',
+            'release_date': '2021-05-25'
+        }
+        auth_header = get_auth_header(CASTING_ASSISTANT_TOKEN)
+
+        res = self.client().post('/movies', json=new_movie, headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['code'], "unauthorized")
+
+    def test_401_unauthorized_update_movies(self):
+        updated_movie = {
+            'release_date': '2030-05-25'
+        }
+        auth_header = get_auth_header(CASTING_ASSISTANT_TOKEN)
+
+        movie = Movie.query.order_by(Movie.id).all()[0]
+        res = self.client().patch(
+            f'/movies/{movie.id}', json=updated_movie, headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['code'], "unauthorized")
+
+    def test_401_unauthorized_delete_movie(self):
+        auth_header = get_auth_header(CASTING_ASSISTANT_TOKEN)
+
+        movie = Movie.query.order_by(Movie.id).all()[0]
+        res = self.client().delete(f'/movies/{movie.id}', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['code'], "unauthorized")
 
 
 if __name__ == "__main__":
