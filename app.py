@@ -7,7 +7,7 @@ from models import db, setup_db, db_drop_and_create_all, Movie
 from auth import AuthError, requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
 
 # True: development, False: production
-is_dev = True
+is_dev = False
 
 
 def create_app(test_config=None):
