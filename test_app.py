@@ -234,7 +234,7 @@ class TestCase(unittest.TestCase):
 
     def test_404_update_invalid_actor(self):
         updated_actor = {
-            'release_date': '2030-05-25'
+            'age': 26
         }
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
