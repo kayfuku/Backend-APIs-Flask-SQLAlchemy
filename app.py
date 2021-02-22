@@ -3,11 +3,11 @@ import json
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import db, setup_db, db_drop_and_create_all, Movie
+from models import db, setup_db, db_drop_and_create_all, Movie, Actor, Cast
 from auth import AuthError, requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
 
 # True: development, False: production
-is_dev = False
+is_dev = True
 
 
 def create_app(test_config=None):
@@ -139,8 +139,7 @@ def update_movie(jwt, movie_id):
             new_release_date = body.get('release_date', None)
 
             movie.title = new_title or movie.title
-            movie.release_date = json.dumps(
-                new_release_date) or movie.release_date
+            movie.release_date = new_release_date or movie.release_date
 
             movie.update()
 
@@ -172,6 +171,120 @@ def delete_movie(jwt, movie_id):
             return jsonify({
                 'success': True,
                 'deleted_id': movie_id
+            })
+
+        except Exception as ex:
+            db.session.rollback()
+            print(ex)
+            abort(422)
+
+
+@app.route('/actors', methods=['GET'])
+@requires_auth('get:actors')
+def get_actors(jwt):
+    selection = Actor.query.order_by(Actor.id).all()
+    current_actors = [actor.get_dict()
+                      for actor in paginate(selection, MOVIES_PER_PAGE)]
+    if len(current_actors) == 0:
+        abort(404)
+
+    return jsonify({
+        'success': True,
+        'actors': current_actors,
+        'total_actors': len(selection)
+    })
+
+
+@app.route('/actors', methods=['POST'])
+@requires_auth('post:actors')
+def create_actor(jwt):
+    body = request.get_json()
+    if body is None:
+        abort(400)
+
+    try:
+        new_name = body.get('name', None)
+        new_age = body.get('age', None)
+        new_gender = body.get('gender', None)
+
+        if new_age:
+            new_age = int(new_age)
+
+        actor = Actor(
+            name=new_name,
+            age=new_age,
+            gender=new_gender
+        )
+        actor.insert()
+
+        selection = Actor.query.order_by(Actor.id).all()
+        current_actors = [actor.get_dict()
+                          for actor in paginate(selection, MOVIES_PER_PAGE)]
+
+        return jsonify({
+            'success': True,
+            'created': actor.id,
+            'actors': current_actors,
+            'total_actors': len(Actor.query.all())
+        })
+
+    except Exception as ex:
+        db.session.rollback()
+        abort(422)
+
+
+@app.route('/actors/<int:actor_id>', methods=['PATCH'])
+@requires_auth('patch:actors')
+def update_actor(jwt, actor_id):
+    body = request.get_json()
+
+    actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+    if actor is None:
+        return jsonify({
+            'success': False,
+            'error': 'Actor id ' + str(actor_id) + ' not found to be edited.'
+        }), 404
+
+    else:
+        try:
+            new_name = body.get('name', None)
+            new_age = body.get('age', None)
+            new_gender = body.get('gender', None)
+
+            actor.name = new_name or actor.name
+            actor.age = new_age or actor.age
+            actor.gender = new_gender or actor.gender
+
+            actor.update()
+
+            return jsonify({
+                'success': True,
+                'updated_id': actor.id,
+                'updated_actor': actor.get_dict()
+            })
+
+        except Exception as ex:
+            db.session.rollback()
+            abort(422)
+
+
+@app.route('/actors/<int:actor_id>', methods=['DELETE'])
+@requires_auth('delete:actors')
+def delete_actor(jwt, actor_id):
+    actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+    if actor is None:
+        return jsonify({
+            'success': False,
+            'error': 'Actor id ' + str(actor_id) + ' not found to be deleted.'
+        }), 404
+
+    else:
+        try:
+            actor.delete()
+
+            return jsonify({
+                'success': True,
+                'deleted_id': actor_id
             })
 
         except Exception as ex:

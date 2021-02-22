@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from app import app
-from models import setup_db, Movie
+from models import setup_db, Movie, Actor, Cast
 
 
 CASTING_ASSISTANT_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwYTY4Njg0NDFmZDYwMDcwODFjZDMxIiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4Njg3MjMsImV4cCI6MTYxMzk1NTEyMywiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.TKd4M_8K-DgcKP_RRd3-R06A0vXFUYARLA22zxRoYCgTSTXE40NY483I-BICDVSeJabH_-wamtrGY2xO4ivsiyCm3kepYE6THqb69si3MXNrxIOHRfvcwj3YXIuWP7QCopthTcWIMJdY7Uc49wAl-OqEq_VmVef29sA6cXQMKQ71sp5cmRqm0S8Qvmz7nCmRKlOgU0O1IqjnSw3LZmiEtYYO9HD9fXF6ppTlDIPA_fNs0ImY202k_VXFiBI5gq5BRuM1k87Teub4cPZijY0oD3m34gRaVv7X_ccmwLuzsE6zOQeXzl2r5q0KWJTtfT2TOwgE-FK3D1WGzPHZcoqMfA'
@@ -44,6 +44,10 @@ class TestCase(unittest.TestCase):
     """
     Test
     """
+
+    '''
+    Test create, read, update, delete movies.
+    '''
 
     def test_get_greeting(self):
         res = self.client().get('/')
@@ -158,6 +162,102 @@ class TestCase(unittest.TestCase):
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
         res = self.client().delete('/movies/1000000', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+    '''
+    Test create, read, update, delete actors.
+    '''
+
+    def test_get_actors(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().get('/actors', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['total_actors'])
+        self.assertTrue(len(data['actors']))
+
+    def test_404_get_actors(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().get('/actors?page=1000000', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_create_actor(self):
+        new_actor = {
+            'name': 'Alice',
+            'age': 25,
+            'gender': 'F'
+        }
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().post('/actors', json=new_actor, headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(len(data))
+
+    def test_400_create_actor(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().post('/actors', headers=auth_header)  # no body
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'bad request')
+
+    def test_update_actors(self):
+        updated_actor = {
+            'age': 26
+        }
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        actor = Actor.query.order_by(Actor.id).all()[0]
+        res = self.client().patch(
+            f'/actors/{actor.id}', json=updated_actor, headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['updated_id'], actor.id)
+
+    def test_404_update_invalid_actor(self):
+        updated_actor = {
+            'release_date': '2030-05-25'
+        }
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().patch('/actors/1000000', json=updated_actor, headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+    def test_delete_actor(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        actor = Actor.query.order_by(Actor.id).all()[0]
+        res = self.client().delete(f'/actors/{actor.id}', headers=auth_header)
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_delete_invalid_actor(self):
+        auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
+
+        res = self.client().delete('/actors/1000000', headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
