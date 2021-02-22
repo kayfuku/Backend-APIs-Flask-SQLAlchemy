@@ -176,6 +176,7 @@ def delete_movie(jwt, movie_id):
 
         except Exception as ex:
             db.session.rollback()
+            print(ex)
             abort(422)
 
 

@@ -9,7 +9,7 @@ from models import setup_db, Movie
 
 CASTING_ASSISTANT_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwYTY4Njg0NDFmZDYwMDcwODFjZDMxIiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4Njg3MjMsImV4cCI6MTYxMzk1NTEyMywiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImdldDphY3RvcnMiLCJnZXQ6bW92aWVzIl19.TKd4M_8K-DgcKP_RRd3-R06A0vXFUYARLA22zxRoYCgTSTXE40NY483I-BICDVSeJabH_-wamtrGY2xO4ivsiyCm3kepYE6THqb69si3MXNrxIOHRfvcwj3YXIuWP7QCopthTcWIMJdY7Uc49wAl-OqEq_VmVef29sA6cXQMKQ71sp5cmRqm0S8Qvmz7nCmRKlOgU0O1IqjnSw3LZmiEtYYO9HD9fXF6ppTlDIPA_fNs0ImY202k_VXFiBI5gq5BRuM1k87Teub4cPZijY0oD3m34gRaVv7X_ccmwLuzsE6zOQeXzl2r5q0KWJTtfT2TOwgE-FK3D1WGzPHZcoqMfA'
 
-EXECUTIVE_PRODUCER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwMGY2YjIxNTIyMTgwMDZhM2M3NmU5IiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4Njg4MTcsImV4cCI6MTYxMzk1NTIxNywiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.jGFuc-cQV3upmqGAIvndatJgcneUzgdeFYkoyDi2RTwLwrpEwc0qaUB22Nt5cr8NSVmYfqrO_837vtaTtECqWSelqJOQWNV97vCjqqKNjLjyUlkRel69aGcSEF6BhexQR1dfIq_7AND3ZZZc1N_2PJlILZ_ePJbxzdMszDY-JLEIvZ1eu_vwKFirX1KW_4LkYg6dxocVNYJXJXULpV9Ma-_VyESAWqDh49mAHD0W3N15M4cqpJpMsRKRgWMnuz8W2246gIy-pCEFb65xqqO1SRbcMwhCIgqXNe69rPQnWuzSo74XYdjhLr8x3-4jdjczNtcS4ARaUvLvmBz7Eq2SfA'
+EXECUTIVE_PRODUCER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwMGY2YjIxNTIyMTgwMDZhM2M3NmU5IiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM5NTU1OTQsImV4cCI6MTYxNDA0MTk5NCwiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.RnWM5mptfbfGgoUVwlYNoYIAX891PDbTZ-RNxlwmHqBJZNUhmUWtWxw3T71C8KgBChqzkDHxXYEZ9ki1zb7-FEIypOQfO3y9YiofWZu7YC1JsBbbccxvYm-e0nuvjEGfzvUCPT2YG-eXtAhDtz1v7E56uxjEwhyPUHFuzAa4-XTdkzXIwGmoAklSHotPfPTR55z-cG8JrQMYWgHAQEGmOkc0fqQVgZhsREAwIQYfSh9ZY0dGkPwKkT7yO9fvb3uvgH6DG23sHEkynlnh6GjvJ7rfzAcixlI54khmJN4Jiv1ncKtDHDkvh4ktddMMZBGinYQhFTFn2tae8fpz09cqCw'
 
 EXPIRED_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlhIM1liU1Q3Qkt6aXF1NnF2X3pIXyJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtaWFtLWRldi51cy5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NjAwMGY2YjIxNTIyMTgwMDZhM2M3NmU5IiwiYXVkIjoiY2Fwc3RvbmUiLCJpYXQiOjE2MTM4MDU4NzQsImV4cCI6MTYxMzgxMzA3NCwiYXpwIjoic1NHZVNFaWFxMTNISUdHSXg2UE5uNENqTkRNb0dDbGYiLCJzY29wZSI6IiIsInBlcm1pc3Npb25zIjpbImRlbGV0ZTphY3RvcnMiLCJkZWxldGU6bW92aWVzIiwiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiLCJwYXRjaDphY3RvcnMiLCJwYXRjaDptb3ZpZXMiLCJwb3N0OmFjdG9ycyIsInBvc3Q6bW92aWVzIl19.GMhyhppfQeo8I47Y3oKaIIWpOHFA51xIMwjdF_D-EIFi40yxbzWKawfZJbpbLoSNA3ar3DM9SRh33AwNOvDXLrDmqEjo7nfmvxmUoWAHAV8pTDwjGo50oo-Xtd0br6pwMjU2A7PWqhRLBJt1k7jLnc9B_7cNzUu3zGkhzGoqOQ3XEMhHKKbU-5CGXvbftDVcZBYRJfQe_SIP9_0iRJS6S5g8KxesXWEVvLlIcvd3MRbJC3uk64m9UvW5cGVd9Piu-zfBR4cgsa3Wk0pxUAQvR_z1X3lFRbq-5ulqZDDkVAsu5L5GoEGFiwd5T_jcrEcilm3v5mKtpsVCai_DkbSwFw'
 
@@ -92,10 +92,6 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data))
 
-        # Delete the row just created.
-        created_id = data['created']
-        Movie.query.filter(Movie.id == created_id).one_or_none().delete()
-
     def test_400_create_movie(self):
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
@@ -112,12 +108,14 @@ class TestCase(unittest.TestCase):
         }
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        res = self.client().patch('/movies/4', json=updated_movie, headers=auth_header)
+        movie = Movie.query.order_by(Movie.id).all()[0]
+        res = self.client().patch(
+            f'/movies/{movie.id}', json=updated_movie, headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['updated_id'], 4)
+        self.assertEqual(data['updated_id'], movie.id)
 
     def test_404_update_invalid_movie(self):
         updated_movie = {
@@ -149,7 +147,7 @@ class TestCase(unittest.TestCase):
     def test_delete_movie(self):
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        movie = Movie.query.all()[0]
+        movie = Movie.query.order_by(Movie.id).all()[0]
         res = self.client().delete(f'/movies/{movie.id}', headers=auth_header)
         data = json.loads(res.data)
 
