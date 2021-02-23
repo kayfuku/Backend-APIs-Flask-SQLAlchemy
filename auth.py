@@ -6,12 +6,16 @@ from jose import jwt
 from urllib.request import urlopen
 
 
-# Configurations gotten from the account created on Auth0
+# Configurations for Auth0
 AUTH0_DOMAIN = os.environ["AUTH0_DOMAIN"]
 ALGORITHMS = os.environ["ALGORITHMS"]
 API_AUDIENCE = os.environ["API_AUDIENCE"]
 AUTH0_CLIENT_ID = os.environ["AUTH0_CLIENT_ID"]
 AUTH0_CALLBACK_URL = os.environ["AUTH0_CALLBACK_URL"]
+
+CASTING_ASSISTANT_TOKEN = os.environ["CASTING_ASSISTANT_TOKEN"]
+EXECUTIVE_PRODUCER_TOKEN = os.environ["EXECUTIVE_PRODUCER_TOKEN"]
+EXPIRED_TOKEN = os.environ["EXPIRED_TOKEN"]
 
 
 '''
