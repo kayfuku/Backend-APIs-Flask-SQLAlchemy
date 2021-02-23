@@ -13,7 +13,7 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
 - **Deployment**: [Heroku](https://www.heroku.com/)
   
   
-## Run the server locally  
+## Run server locally  
 
 1. **Install Dependencies**  
     ```
@@ -21,7 +21,7 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
     ```
   
 2. **Create Local Database**  
-    Create a local database and set the database URI to an environment variable `DATABASE_URL` in setup.sh.
+    Create a local database and set the database URI to the environment variable `DATABASE_URL` in `setup.sh`.
   
 3. **Export Environment Variables**  
     ```
@@ -30,7 +30,7 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
   
 4. **Run Database Migrations**  
     ```
-    python manage.py db init # only needed once at the beginning
+    python manage.py db init  # only needed once at the beginning
     python manage.py db migrate
     python manage.py db upgrade
     ```
@@ -40,19 +40,6 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
     export FLASK_APP=app.py
     flask run --reload
     ```
-  
-  
-## Testing  
-**[Postman](https://www.postman.com/)** is used for testing. A postman collection has been created for testing the API endpoints.
-The application server has been up and running on Heroku and the tokens have already been set in the collection and will expire at around 2/23 10:00 pm (PST))
-
-API endpoint root URL: https://full-stack-web-app-4.herokuapp.com/
-
-1. Import [the file](udacity-fsnd-capstone.postman_collection.json) into Postman to run the tests.
-
-2. Adjust the values of the host name and the tokens for your own. (Already set)
-
-3. Run the collection. 
   
   
 ## Roles and Permissions  
@@ -66,6 +53,18 @@ The application has two roles:
     - Can create a new movie and a new actor
     - Can update a movie and an actor
     - Can delete a movie and an actor
+  
+  
+## Testing server on Heroku  
+**[Postman](https://www.postman.com/)** is used for testing. The application server has been up and running on Heroku and the tokens have already been set in the postman collection and will expire at around 2/23 10:00 pm (PST).  
+  
+API endpoint root URL: https://full-stack-web-app-4.herokuapp.com/
+  
+1. Import [the file](udacity-fsnd-capstone.postman_collection.json) into Postman to run the tests.
+
+2. Adjust the values of the host name and the tokens for your own. (Already set)
+
+3. Run the collection.  
   
   
 ## API Reference  
