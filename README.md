@@ -5,12 +5,13 @@
 The purpose of this project is to learn about how to build database-backed APIs and web applications, including REST APIs, schema design, database migrations, Object-Relational Mapping (ORM), API testing, authentication and authorization with Json Web Token (JWT) and asymmetric encryption through Auth0, and server deployment on Heroku.  
 
 ## Application Stack  
+This appication only has a backend code. [Python 3](https://www.python.org/downloads/) is required.  
+
 - **Framework**: [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
 - **ORM**: [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
-- **Deployment**: [Heroku](https://www.heroku.com/)
+- **Deployment**: [Heroku](https://www.heroku.com/){:target="_blank" rel="noopener"}
 
-- This appication only has a backend code. [Python 3](https://www.python.org/downloads/) is required.  
 
 #### Virtual Enviornment
 
