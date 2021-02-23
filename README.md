@@ -21,8 +21,8 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
     pip install -r requirements.txt
     ```
 
-2. **Create Local Database**:
-    Create a local database and set the database URI to an environment variable `DATABASE_PATH` in setup.sh.
+2. **Create Local Database**
+    Create a local database and set the database URI to an environment variable `DATABASE_URL` in setup.sh.
 
 3. **Export Environment Variables**
     ```
@@ -46,32 +46,29 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
 ## Testing
 
 **[Postman](https://www.postman.com/)** is used for testing. A postman collection has been created for testing the API endpoints.
+The application server has been up and running on Heroku and the tokens have already been set in the collection and will expire at around 2/23 10:00 pm (PST))
+
+API endpoint root URL: https://full-stack-web-app-4.herokuapp.com/
 
 1. Import [the file](udacity-fsnd-capstone.postman_collection.json) into Postman to run the tests.
 
-2. Adjust the values of the host name and the tokens for your own. (Tokens have already been set and will expire at around 2/23 10:00 pm (PST))
+2. Adjust the values of the host name and the tokens for your own. (Already set)
 
 3. Run the collection. 
 
 
 ## Roles and Permissions
-The application has 3 roles setup:
+The application has two roles:
 
 1. **Casting Assistant**
-    - Can *get* all actors in the database
-    - Can *get* all movies in the database
+    - Can view all movies and actors in the database
 
-2. **Casting Director**
-    - *All permissions* of the casting assistant
-    - Can *post* a new actor
-    - Can *modify* the details of an existing actor
-    - Can *delete* an actor from the database
-    - Can *modify* the details of an existing movie
+2. **Executive Producer**
+    - Has all the permissions of Casting Assistant
+    - Can create a new movie and a new actor
+    - Can update a movie and an actor
+    - Can delete a movie and an actor
 
-3. **Executive Producer**
-    - *All permissions* of the casting director
-    - Can *post* a new movie
-    - Can *delete* a movie from the database
 
 ## API Reference
 
