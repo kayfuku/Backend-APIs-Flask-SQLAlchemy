@@ -56,9 +56,9 @@ The application has two roles:
   
   
 ## Testing server on Heroku  
-**[Postman](https://www.postman.com/)** is used for testing. The application server has been up and running on Heroku and the tokens have already been set in the postman collection and will expire at around 2/23 10:00 pm (PST).  
+**[Postman](https://www.postman.com/)** is used for testing. The application server has been up and running on Heroku and the tokens have already been set in the postman collection and will expire at around 2/23 9:10 pm (PST).  
   
-API endpoint root URL: https://full-stack-web-app-4.herokuapp.com/
+API endpoint root URL: `https://full-stack-web-app-4.herokuapp.com/`
   
 1. Import [the file](udacity-fsnd-capstone.postman_collection.json) into Postman to run the tests.
 
@@ -70,8 +70,8 @@ API endpoint root URL: https://full-stack-web-app-4.herokuapp.com/
 ## API Reference  
   
 ### Getting Started
-- Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`, which is set as a proxy in the frontend configuration. 
-- Authentication: This version of the application does not require authentication or API keys. 
+- The app is hosted at `https://full-stack-web-app-4.herokuapp.com/`. 
+- Authentication and authorizatioon: This application requires a Casting Assistant or Executive Producer role described above.  
 
 ### Error Handling
 Errors are returned as JSON objects in the following format:
@@ -85,255 +85,135 @@ Errors are returned as JSON objects in the following format:
 The API will return three error types when requests fail:
 - 400: Bad Request
 - 404: Resource Not Found
-- 422: Not Processable 
+- 422: Not Processable
+- 401: Unauthorized
 
 ### Endpoints  
-#### GET /categories
+#### GET /movies?page=<page_number>
 - General:
-    - Returns a list of categories, and success value. 
+    - Returns a list of movies, success value, and the total number of movies. 
     - Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1. 
-- Sample: `curl "http://127.0.0.1:5000/categories"`
+- Sample: `curl "http://127.0.0.1:8080/movies?page=1"`
 
-``` {
-  "categories": [
-    {
-      "id": 1, 
-      "type": "Science"
-    }, 
-    {
-      "id": 2, 
-      "type": "Art"
-    }, 
-    {
-      "id": 3, 
-      "type": "Geography"
-    }, 
-    {
-      "id": 4, 
-      "type": "History"
-    }, 
-    {
-      "id": 5, 
-      "type": "Entertainment"
-    }, 
-    {
-      "id": 6, 
-      "type": "Sports"
-    }
-  ], 
-  "success": true
+``` 
+{
+    "movies": [
+        {
+            "id": 25,
+            "release_date": "05/25/2030",
+            "title": "Movie D"
+        },
+        {
+            "id": 27,
+            "release_date": "05/25/2021",
+            "title": "Movie D"
+        },
+        
+        ...
+        
+        {
+            "id": 29,
+            "release_date": "05/25/2021",
+            "title": "Movie D"
+        }
+    ],
+    "success": true,
+    "total_movies": 4
 }
 ```
 
-#### GET /questions?page=<page_number>
+#### GET /actors?page=<page_number>
 - General:
-    - Returns a list of questions, success value, total number of the questions, current category, and all categories. 
+    - Returns a list of actors, success value, and the total number of actors. 
     - Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1. 
-- Sample: `curl "http://127.0.0.1:5000/questions?page=1"`
+- Sample: `curl "http://127.0.0.1:8080/actors?page=1"`
 
 ```
 {
-  "categories": [
-    {
-      "id": 1, 
-      "type": "Science"
-    }, 
-    {
-      "id": 2, 
-      "type": "Art"
-    }, 
-    {
-      "id": 3, 
-      "type": "Geography"
-    }, 
-    {
-      "id": 4, 
-      "type": "History"
-    }, 
-    {
-      "id": 5, 
-      "type": "Entertainment"
-    }, 
-    {
-      "id": 6, 
-      "type": "Sports"
-    }
-  ], 
-  "current_category": [], 
-  "questions": [
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
-    {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    },  
-    
-    ...,  
-    
-    {
-      "answer": "Agra", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 15, 
-      "question": "The Taj Mahal is located in which Indian city?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 22
+    "actors": [
+        {
+            "age": 26,
+            "gender": "F",
+            "id": 11,
+            "name": "Alice"
+        },
+        {
+            "age": 25,
+            "gender": "F",
+            "id": 12,
+            "name": "Alice"
+        }
+    ],
+    "success": true,
+    "total_actors": 2
 }
 ```
 
-#### DELETE /questions/<question_id>
-- General:  
-    - Deletes the qustion of the given ID if it exists. Returns the id of the deleted question, success value, total questions, and question list based on current page number to update the frontend. 
-    - Request argument: question id to be deleted
-- Sample: `curl -X DELETE "http://127.0.0.1:5000/questions/1"`
-
-```
-{
-  "deleted": 26, 
-  "questions": [
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
-    {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    }, 
-        
-    ...,  
-  
-    {
-      "answer": "Agra", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 15, 
-      "question": "The Taj Mahal is located in which Indian city?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 21
-}
-```
-
-#### POST /questions
+#### POST /movies
 - General:
-    - Creates a new question using the submitted statement, answer, difficulty and category. Returns the id of the created question, success value, total questions, and question list based on current page number to update the frontend. 
-- Sample: `curl -X POST "http://127.0.0.1:5000/questions" -H "Content-Type: application/json" -d '{"question":"q3", "answer":"a3", "difficulty":"1", "category":"1"}'`
+    - Creates a new movie using the submitted title and release date. Returns the id of the created movie, success value, total number of movies, and movie list based on current page number. 
+- Sample: `curl -X POST "http://127.0.0.1:8080/movies" -H "Content-Type: application/json" -d '{"title":"Movie D", "release_date":"2021-05-25"}'`
 
 ```
 {
-  "created": 28, 
-  "questions": [
-    {
-      "answer": "Apollo 13", 
-      "category": 5, 
-      "difficulty": 4, 
-      "id": 2, 
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    }, 
-    {
-      "answer": "Maya Angelou", 
-      "category": 4, 
-      "difficulty": 2, 
-      "id": 5, 
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    }, 
+    "created": 30,
+    "movies": [
+        {
+            "id": 25,
+            "release_date": "05/25/2030",
+            "title": "Movie D"
+        },
+        {
+            "id": 27,
+            "release_date": "05/25/2021",
+            "title": "Movie D"
+        },
         
-    ...,  
-  
-    {
-      "answer": "Agra", 
-      "category": 3, 
-      "difficulty": 2, 
-      "id": 15, 
-      "question": "The Taj Mahal is located in which Indian city?"
-    }
-  ], 
-  "success": true, 
-  "total_questions": 22
+        ...
+        
+        {
+            "id": 30,
+            "release_date": "05/25/2021",
+            "title": "Movie D"
+        }
+    ],
+    "success": true,
+    "total_movies": 5
 }
 ```  
 
-#### GET /categories/<category_id>/questions  
-- General:
-    - Returns a list of questions in the given category, success value, total number of questions, and current category. 
-    - Request argument: category id to be chosen
-    - Results are paginated in groups of 10. Include a request argument to choose page number, starting from 1. 
-- Sample: `curl "http://127.0.0.1:5000/categories/1/questions"`
+#### PATCH /movies/<movie_id>
+- General:  
+    - Updates the movie of the given ID if it exists. Returns the id of the updated movie, success value, total number of movies, and movie list based on the current page number.  
+    - Request argument: movie id to be updated
+- Sample: `curl -X PATCH "http://127.0.0.1:8080/movies/25" -H "Content-Type: application/json" -d '{"release_date":"2004-05-25"}'`
 
-```
+```  
 {
-  "current_category": {
-    "id": 1, 
-    "type": "Science"
-  }, 
-  "questions": [
-    {
-      "answer": "The Liver", 
-      "category": 1, 
-      "difficulty": 4, 
-      "id": 20, 
-      "question": "What is the heaviest organ in the human body?"
-    }, 
-    {
-      "answer": "Alexander Fleming", 
-      "category": 1, 
-      "difficulty": 3, 
-      "id": 21, 
-      "question": "Who discovered penicillin?"
-    }, 
-    
-    ...,  
-    
-    {
-      "answer": "a3", 
-      "category": 1, 
-      "difficulty": 1, 
-      "id": 28, 
-      "question": "q3"
+    "success": true,
+    "updated_id": 25,
+    "updated_movie": {
+        "id": 25,
+        "release_date": "05/25/2004",
+        "title": "Movie D"
     }
-  ], 
-  "success": true, 
-  "total_questions": 5
 }
-```
+```  
 
-#### POST /quizzes
-- General:
-    - Takes quiz category and previous questions parameters and returns a random question within the given category, if provided, and that is not one of the previous questions.  
-
-- Sample: `curl -X POST "http://127.0.0.1:5000/quizzes" -H "Content-Type: application/json" -d '{"quiz_category":{"id": 1, "type": "Science"}, "previous_questions": []}'`
+#### DELETE /movies/<movie_id>
+- General:  
+    - Deletes the movie of the given ID if it exists. Returns the id of the deleted movie and success value.  
+    - Request argument: movie id to be deleted
+- Sample: `curl -X DELETE "http://127.0.0.1:8080/movies/27"`
 
 ```
 {
-  "question": {
-    "answer": "a1", 
-    "category": 1, 
-    "difficulty": 1, 
-    "id": 24, 
-    "question": "q1"
-  }, 
-  "success": true
+    "deleted_id": 27,
+    "success": true
 }
-```
+```    
   
-
+  
 ## Authors
 kei (kayfuku) + Udacity
 
