@@ -4,86 +4,74 @@
   
 The purpose of this project is to learn about how to build database-backed APIs and web applications, including REST APIs, schema design, database migrations, Object-Relational Mapping (ORM), API testing, authentication and authorization with Json Web Token (JWT) and asymmetric encryption through Auth0, and server deployment on Heroku.  
 
+
 ## Application Stack  
 This appication only has a backend code. [Python 3](https://www.python.org/downloads/) is required.  
 
 - **Framework**: [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
 - **ORM**: [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
-- **Deployment**: [Heroku](https://www.heroku.com/){:target="_blank" rel="noopener"}
+- **Deployment**: [Heroku](https://www.heroku.com/)
 
 
-#### Virtual Enviornment
+## Run the server locally
 
-We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+1. **Install Dependencies**
+    ```
+    pip install -r requirements.txt
+    ```
 
-#### PIP Dependencies
+2. **Create Local Database**:
+    Create a local database and set the database URI to an environment variable `DATABASE_PATH` in setup.sh.
 
-Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
+3. **Export Environment Variables**
+    ```
+    source setup.sh
+    ```
 
-```bash
-pip install -r requirements.txt
-```
+4. **Run Database Migrations**:
+    ```
+    python manage.py db init # only needed once at the beginning
+    python manage.py db migrate
+    python manage.py db upgrade
+    ```
 
-This will install all of the required packages we selected within the `requirements.txt` file.
-
-Key Dependencies:  
-
-- [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
-
-- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
-
-- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
-
-#### Database Setup  
-
-With Postgres running, restore a database using the trivia.psql file provided. From the backend folder in terminal run:
-
-```bash
-createdb trivia
-psql trivia < trivia.psql
-```
-
-Also, set the database name to ```trivia```, on line 6 in models.py.  
-
-#### Running the server
-
-From within the `backend` directory first ensure you are working using your created virtual environment.
-
-To run the server, execute:
-
-```bash
-export FLASK_APP=flaskr
-export FLASK_ENV=development
-flask run
-```
-
-Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
-
-Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
-
-If running locally on Windows, look for the commands in the [Flask documentation](http://flask.pocoo.org/docs/1.0/tutorial/factory/).
-
-The application is run on `http://127.0.0.1:5000/` by default and is a proxy in the frontend configuration. 
+5. **Run the Flask Application locally**:
+    ```
+    export FLASK_APP=app.py
+    flask run --reload
+    ```
 
 
+## Testing
 
-## Tests  
+**[Postman](https://www.postman.com/)** is used for testing. A postman collection has been created for testing the API endpoints.
 
-In order to run tests navigate to the backend folder and run the following commands: 
+1. Import [the file](udacity-fsnd-capstone.postman_collection.json) into Postman to run the tests.
 
-```
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python test_flaskr.py
-```
+2. Adjust the values of the host name and the tokens for your own. (Tokens have already been set and will expire at around 2/23 10:00 pm (PST))
 
-The first time you run the tests, omit the dropdb command. 
+3. Run the collection. 
 
-The database name is already set to ```trivia_test``` on line 17 in test_flaskr.py. 
 
-All tests are kept in that file and should be maintained as updates are made to app functionality. 
+## Roles and Permissions
+The application has 3 roles setup:
+
+1. **Casting Assistant**
+    - Can *get* all actors in the database
+    - Can *get* all movies in the database
+
+2. **Casting Director**
+    - *All permissions* of the casting assistant
+    - Can *post* a new actor
+    - Can *modify* the details of an existing actor
+    - Can *delete* an actor from the database
+    - Can *modify* the details of an existing movie
+
+3. **Executive Producer**
+    - *All permissions* of the casting director
+    - Can *post* a new movie
+    - Can *delete* a movie from the database
 
 ## API Reference
 
