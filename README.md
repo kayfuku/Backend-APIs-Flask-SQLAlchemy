@@ -1,10 +1,9 @@
-# Rest API Study
-
-## Overview  
+# Rest API Study  
   
+## Overview  
 The purpose of this project is to learn about how to build database-backed APIs and web applications, including REST APIs, schema design, database migrations, Object-Relational Mapping (ORM), API testing, authentication and authorization with Json Web Token (JWT) and asymmetric encryption through Auth0, and server deployment on Heroku.  
-
-
+  
+  
 ## Application Stack  
 This appication only has a backend code. [Python 3](https://www.python.org/downloads/) is required.  
 
@@ -12,39 +11,38 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
 - **ORM**: [Flask SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 - **Deployment**: [Heroku](https://www.heroku.com/)
+  
+  
+## Run the server locally  
 
-
-## Run the server locally
-
-1. **Install Dependencies**
+1. **Install Dependencies**  
     ```
     pip install -r requirements.txt
     ```
-
-2. **Create Local Database**
+  
+2. **Create Local Database**  
     Create a local database and set the database URI to an environment variable `DATABASE_URL` in setup.sh.
-
-3. **Export Environment Variables**
+  
+3. **Export Environment Variables**  
     ```
     source setup.sh
     ```
-
-4. **Run Database Migrations**:
+  
+4. **Run Database Migrations**  
     ```
     python manage.py db init # only needed once at the beginning
     python manage.py db migrate
     python manage.py db upgrade
     ```
-
-5. **Run the Flask Application locally**:
+  
+5. **Run the Flask Application locally**  
     ```
     export FLASK_APP=app.py
     flask run --reload
     ```
-
-
-## Testing
-
+  
+  
+## Testing  
 **[Postman](https://www.postman.com/)** is used for testing. A postman collection has been created for testing the API endpoints.
 The application server has been up and running on Heroku and the tokens have already been set in the collection and will expire at around 2/23 10:00 pm (PST))
 
@@ -55,11 +53,11 @@ API endpoint root URL: https://full-stack-web-app-4.herokuapp.com/
 2. Adjust the values of the host name and the tokens for your own. (Already set)
 
 3. Run the collection. 
-
-
-## Roles and Permissions
-The application has two roles:
-
+  
+  
+## Roles and Permissions  
+The application has two roles:  
+  
 1. **Casting Assistant**
     - Can view all movies and actors in the database
 
@@ -68,10 +66,10 @@ The application has two roles:
     - Can create a new movie and a new actor
     - Can update a movie and an actor
     - Can delete a movie and an actor
-
-
-## API Reference
-
+  
+  
+## API Reference  
+  
 ### Getting Started
 - Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`, which is set as a proxy in the frontend configuration. 
 - Authentication: This version of the application does not require authentication or API keys. 
