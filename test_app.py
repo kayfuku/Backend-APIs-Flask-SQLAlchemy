@@ -26,7 +26,7 @@ class TestCase(unittest.TestCase):
         self.app = app
         self.client = self.app.test_client
         self.database_name = "capstone"
-        self.database_path = "postgres://{}/{}".format(
+        self.database_path = "postgresql://{}/{}".format(
             'localhost:5432', self.database_name)
         setup_db(self.app, self.database_path)
 
@@ -89,7 +89,8 @@ class TestCase(unittest.TestCase):
         }
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        res = self.client().post('/movies', json=new_movie, headers=auth_header)
+        res = self.client().post('/movies', json=new_movie,
+                                 headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -127,7 +128,8 @@ class TestCase(unittest.TestCase):
         }
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        res = self.client().patch('/movies/1000000', json=updated_movie, headers=auth_header)
+        res = self.client().patch('/movies/1000000', json=updated_movie,
+                                  headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -200,7 +202,8 @@ class TestCase(unittest.TestCase):
         }
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        res = self.client().post('/actors', json=new_actor, headers=auth_header)
+        res = self.client().post('/actors', json=new_actor,
+                                 headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
@@ -238,7 +241,8 @@ class TestCase(unittest.TestCase):
         }
         auth_header = get_auth_header(EXECUTIVE_PRODUCER_TOKEN)
 
-        res = self.client().patch('/actors/1000000', json=updated_actor, headers=auth_header)
+        res = self.client().patch('/actors/1000000', json=updated_actor,
+                                  headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
@@ -264,7 +268,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     '''
-    Tests for Casting Assistant
+    Tests for Casting Assistant role permissions
     '''
 
     def test_get_movies(self):
@@ -285,7 +289,8 @@ class TestCase(unittest.TestCase):
         }
         auth_header = get_auth_header(CASTING_ASSISTANT_TOKEN)
 
-        res = self.client().post('/movies', json=new_movie, headers=auth_header)
+        res = self.client().post('/movies', json=new_movie,
+                                 headers=auth_header)
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 401)

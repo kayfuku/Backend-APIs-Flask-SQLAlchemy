@@ -1,5 +1,6 @@
 import os
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, create_engine
+from sqlalchemy import Column, String, Integer, DateTime, \
+    ForeignKey, create_engine
 from flask_sqlalchemy import SQLAlchemy
 import json
 
@@ -106,7 +107,7 @@ class Actor(db.Model):
 
 
 class Cast(db.Model):
-    '''Join table (Associated table/Intermediary table) between Movie and Actor'''
+    '''Join table (Associated/Intermediary table) between Movie and Actor'''
 
     __tablename__ = 'casts'
 

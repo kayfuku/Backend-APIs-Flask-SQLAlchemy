@@ -4,10 +4,11 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, setup_db, db_drop_and_create_all, Movie, Actor, Cast
-from auth import AuthError, requires_auth, AUTH0_DOMAIN, ALGORITHMS, API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
+from auth import AuthError, requires_auth, AUTH0_DOMAIN, ALGORITHMS, \
+    API_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_CALLBACK_URL
 
 # True: development, False: production
-is_dev = False
+is_dev = True
 
 
 def create_app(test_config=None):
