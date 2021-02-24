@@ -1,4 +1,4 @@
-# Rest API Study  
+# REST API Study  
   
 ## Overview  
 The purpose of this project is to learn about how to build database-backed APIs and web applications, including REST APIs, schema design, database migrations, Object-Relational Mapping (ORM), API testing, authentication and authorization with Json Web Token (JWT) and asymmetric encryption through Auth0, and server deployment on Heroku.  
