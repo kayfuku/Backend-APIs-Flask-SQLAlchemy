@@ -28,12 +28,32 @@ def db_drop_and_create_all():
 
 
 '''
+Extend the base Model class to add common methods
+'''
+
+
+class ExtendedBaseModelClass(db.Model):
+    __abstract__ = True
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+'''
 Movie
 Have title and release date
 '''
 
 
-class Movie(db.Model):
+class Movie(ExtendedBaseModelClass):
     __tablename__ = 'movies'
 
     id = Column(Integer, primary_key=True)
@@ -49,17 +69,6 @@ class Movie(db.Model):
     def __repr__(self):
         return '<Movie %r>' % self
 
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
     def get_dict(self):
         return {
             'id': self.id,
@@ -74,7 +83,7 @@ Have name, age, and gender
 '''
 
 
-class Actor(db.Model):
+class Actor(ExtendedBaseModelClass):
     __tablename__ = 'actors'
 
     id = Column(Integer, primary_key=True)
@@ -92,17 +101,6 @@ class Actor(db.Model):
     def __repr__(self):
         return '<Actor %r>' % self
 
-    def insert(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def update(self):
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
     def get_dict(self):
         return {
             'id': self.id,
@@ -112,7 +110,7 @@ class Actor(db.Model):
         }
 
 
-class Cast(db.Model):
+class Cast(ExtendedBaseModelClass):
     '''Join table (Associated/Intermediary table) between Movie and Actor'''
 
     __tablename__ = 'casts'
