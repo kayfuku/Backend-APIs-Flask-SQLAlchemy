@@ -68,6 +68,12 @@ class Movie(db.Model):
         }
 
 
+'''
+Actor
+Have name, age, and gender
+'''
+
+
 class Actor(db.Model):
     __tablename__ = 'actors'
 
