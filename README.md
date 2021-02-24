@@ -36,7 +36,7 @@ Flask is a simple but versatile web application framework, which is a good start
     ```
   
 5. **Run the Flask Application locally**  
-    On Linux (macOS):  
+    On Linux (macOS)  
     ```
     export FLASK_APP=app.py
     ```  
@@ -71,7 +71,7 @@ The application has two roles:
     source setup.sh
     ```  
   
-2. **Run the test*  
+2. **Run the test**  
     ```
     python3 test_app.py
     ```  
