@@ -1,11 +1,11 @@
-# REST API Study  
+# Backend APIs example using Flask, SQLAlchemy 
   
 ## Overview  
 The purpose of this project is to learn about how to build database-backed APIs and web applications, including REST APIs, schema design, database migrations, Object-Relational Mapping (ORM), API testing, authentication and authorization with Json Web Token (JWT) and asymmetric encryption through Auth0, and server deployment on Heroku.  
   
   
 ## Application Stack  
-This appication only has a backend code. [Python 3](https://www.python.org/downloads/) is required.  
+Flask is a simple but versatile web application framework, which is a good starting point for learning backend APIs. This appication only has a backend code. [Python 3](https://www.python.org/downloads/) is required.  
 
 - **Framework**: [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
@@ -17,7 +17,7 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
 
 1. **Install Dependencies**  
     ```
-    pip install -r requirements.txt
+    pip3 install -r requirements.txt
     ```
   
 2. **Create Local Database**  
@@ -36,8 +36,16 @@ This appication only has a backend code. [Python 3](https://www.python.org/downl
     ```
   
 5. **Run the Flask Application locally**  
+    On Linux (macOS):  
     ```
     export FLASK_APP=app.py
+    ```  
+    On Windows
+    ```
+    set FLASK_APP=app.py
+    ```  
+    then, 
+    ```
     flask run --reload
     ```
   
@@ -53,6 +61,20 @@ The application has two roles:
     - Can create a new movie and a new actor
     - Can update a movie and an actor
     - Can delete a movie and an actor
+  
+  
+## Testing server locally  
+```test_app.py``` has test cases for expected success and error behavior for each endpoint using the unittest library.  
+
+1. **Export Environment Variables**  
+    ```
+    source setup.sh
+    ```  
+  
+2. **Run the test*  
+    ```
+    python3 test_app.py
+    ```  
   
   
 ## Testing server on Heroku  
