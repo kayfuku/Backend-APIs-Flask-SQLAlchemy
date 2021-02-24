@@ -1,6 +1,12 @@
 import os
+import sys
 import json
-from flask import Flask, request, abort, jsonify
+from flask import (
+    Flask,
+    request,
+    abort,
+    jsonify
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, setup_db, db_drop_and_create_all, Movie, Actor, Cast
@@ -97,8 +103,8 @@ def create_movie(jwt):
         abort(400)
 
     try:
-        new_title = body.get('title', None)
-        new_release_date = body.get('release_date', None)
+        new_title = body.get('title')
+        new_release_date = body.get('release_date')
 
         movie = Movie(
             title=new_title,
@@ -119,6 +125,7 @@ def create_movie(jwt):
 
     except Exception as ex:
         db.session.rollback()
+        print(sys.exc_info())
         abort(422)
 
 
@@ -136,8 +143,8 @@ def update_movie(jwt, movie_id):
 
     else:
         try:
-            new_title = body.get('title', None)
-            new_release_date = body.get('release_date', None)
+            new_title = body.get('title')
+            new_release_date = body.get('release_date')
 
             movie.title = new_title or movie.title
             movie.release_date = new_release_date or movie.release_date
@@ -152,6 +159,7 @@ def update_movie(jwt, movie_id):
 
         except Exception as ex:
             db.session.rollback()
+            print(sys.exc_info())
             abort(422)
 
 
@@ -176,7 +184,7 @@ def delete_movie(jwt, movie_id):
 
         except Exception as ex:
             db.session.rollback()
-            print(ex)
+            print(sys.exc_info())
             abort(422)
 
 
@@ -204,9 +212,9 @@ def create_actor(jwt):
         abort(400)
 
     try:
-        new_name = body.get('name', None)
-        new_age = body.get('age', None)
-        new_gender = body.get('gender', None)
+        new_name = body.get('name')
+        new_age = body.get('age')
+        new_gender = body.get('gender')
 
         if new_age:
             new_age = int(new_age)
@@ -231,6 +239,7 @@ def create_actor(jwt):
 
     except Exception as ex:
         db.session.rollback()
+        print(sys.exc_info())
         abort(422)
 
 
@@ -248,9 +257,9 @@ def update_actor(jwt, actor_id):
 
     else:
         try:
-            new_name = body.get('name', None)
-            new_age = body.get('age', None)
-            new_gender = body.get('gender', None)
+            new_name = body.get('name')
+            new_age = body.get('age')
+            new_gender = body.get('gender')
 
             actor.name = new_name or actor.name
             actor.age = new_age or actor.age
@@ -266,6 +275,7 @@ def update_actor(jwt, actor_id):
 
         except Exception as ex:
             db.session.rollback()
+            print(sys.exc_info())
             abort(422)
 
 
@@ -290,7 +300,7 @@ def delete_actor(jwt, actor_id):
 
         except Exception as ex:
             db.session.rollback()
-            print(ex)
+            print(sys.exc_info())
             abort(422)
 
 
